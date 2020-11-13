@@ -159,7 +159,10 @@ func restoreTable(table string, conn *Connection, reader storage.StorageReadWrit
 // Loader used to start the loader worker.
 func Loader(args *Args) {
 	pool, err := NewPool(args.Threads, args.Address, args.User, args.Password, args.SessionVars)
-	AssertNil(err)
+	if err != nil {
+		klog.Fatalf("Make Mysql Connection Pool Failed: %v", err)
+	}
+
 	defer pool.Close()
 
 	var reader storage.StorageReadWriter

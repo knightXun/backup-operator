@@ -188,7 +188,9 @@ func dumpTable(conn *Connection, args *Args, database string, table string, writ
 
 func allTables(conn *Connection, database string) []string {
 	qr, err := conn.Fetch(fmt.Sprintf("SHOW TABLES FROM `%s`", database))
-	AssertNil(err)
+	if err != nil {
+		klog.Fatalf("Fetch Tables Failed: %v", err)
+	}
 
 	tables := make([]string, 0, 128)
 	for _, t := range qr.Rows {
@@ -199,7 +201,9 @@ func allTables(conn *Connection, database string) []string {
 
 func allDatabases(conn *Connection) []string {
 	qr, err := conn.Fetch("SHOW DATABASES")
-	AssertNil(err)
+	if err != nil {
+		klog.Fatalf("Fetch Databases Failed: %v", err)
+	}
 
 	databases := make([]string, 0, 128)
 	for _, t := range qr.Rows {
@@ -210,7 +214,9 @@ func allDatabases(conn *Connection) []string {
 
 func filterDatabases(conn *Connection, filter *regexp.Regexp, invert bool) []string {
 	qr, err := conn.Fetch("SHOW DATABASES")
-	AssertNil(err)
+	if err != nil {
+		klog.Fatalf("Filter Databases Failed: %v", err)
+	}
 
 	databases := make([]string, 0, 128)
 	for _, t := range qr.Rows {
@@ -224,7 +230,9 @@ func filterDatabases(conn *Connection, filter *regexp.Regexp, invert bool) []str
 // Dumper used to start the dumper worker.
 func Dumper(args *Args) {
 	pool, err := NewPool(args.Threads, args.Address, args.User, args.Password, args.SessionVars)
-	AssertNil(err)
+	if err != nil {
+		klog.Fatalf("Make Mysql Pool Failed: %v", err)
+	}
 	defer pool.Close()
 
 	var writer storage.StorageReadWriter
