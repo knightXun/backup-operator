@@ -22,6 +22,7 @@ func writeMetaData(args *Args, writer storage.StorageReadWriter) error {
 }
 
 func dumpDatabaseSchema(conn *Connection, args *Args, database string, writer storage.StorageReadWriter) error {
+	klog.Info("Dumping Database Schema")
 	err := conn.Execute(fmt.Sprintf("USE `%s`", database))
 	if err != nil {
 		klog.Errorf("Dump %s Tables Schema Failed: %v", database, err)

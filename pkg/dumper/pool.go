@@ -50,9 +50,10 @@ func NewPool(cap int, address string, user string, password string, vars string)
 		}
 		conn := &Connection{ID: i, client: client}
 		if vars != "" {
+			klog.Info("session vars: ", vars)
 			err = conn.Execute(vars)
 			if err != nil {
-				klog.Fatalf("Init Connection Failed: ", err)
+				klog.Errorf("Set Session Failed: ", err)
 			}
 		}
 		conns <- conn
@@ -88,7 +89,7 @@ func (p *Pool) Get() *Connection {
 		if p.vars != "" {
 			err = conn.Execute(p.vars)
 			if err != nil {
-				klog.Fatalf("Init Connection Failed: ", err)
+				klog.Errorf("Set Session Failed:  ", err)
 			}
 		}
 	}
