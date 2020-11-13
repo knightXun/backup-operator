@@ -70,9 +70,6 @@ func NewPool(cap int, address string, user string, password string, vars string)
 
 // Get used to get one connection from the pool.
 func (p *Pool) Get() *Connection {
-	p.mu.RLock()
-	defer p.mu.RUnlock()
-
 	conns := p.getConns()
 	if conns == nil {
 		return nil
