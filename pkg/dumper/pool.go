@@ -1,6 +1,7 @@
 package dumper
 
 import (
+	"k8s.io/klog"
 	"sync"
 
 	"github.com/xelabs/go-mysqlstack/driver"
@@ -12,6 +13,10 @@ import (
 type Pool struct {
 	mu    sync.RWMutex
 	conns chan *Connection
+	address string
+	user string
+	password string
+	vars string
 }
 
 // Connection tuple.
@@ -45,23 +50,49 @@ func NewPool(cap int, address string, user string, password string, vars string)
 		}
 		conn := &Connection{ID: i, client: client}
 		if vars != "" {
-			conn.Execute(vars)
+			err = conn.Execute(vars)
+			if err != nil {
+				klog.Fatalf("Init Connection Failed: ", err)
+			}
 		}
 		conns <- conn
 	}
 
 	return &Pool{
 		conns: conns,
+		address: address,
+		user: user,
+		password: password,
+		vars: vars,
 	}, nil
 }
 
 // Get used to get one connection from the pool.
 func (p *Pool) Get() *Connection {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
 	conns := p.getConns()
 	if conns == nil {
 		return nil
 	}
+
 	conn := <-conns
+
+	if conn.client.Closed() {
+		client, err := driver.NewConn(p.user, p.password, p.address, "", "utf8")
+		if err != nil {
+
+		}
+		conn = &Connection{ID: conn.ID, client: client}
+		if p.vars != "" {
+			err = conn.Execute(p.vars)
+			if err != nil {
+				klog.Fatalf("Init Connection Failed: ", err)
+			}
+		}
+	}
+
 	return conn
 }
 
@@ -83,6 +114,7 @@ func (p *Pool) Close() {
 
 	close(p.conns)
 	for conn := range p.conns {
+		klog.Info("Closing Connection")
 		conn.client.Close()
 	}
 	p.conns = nil
