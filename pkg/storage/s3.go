@@ -23,24 +23,16 @@ type S3ReadWriter struct {
 }
 
 func NewS3ReadWriter( endpoint, region, bucket, accessKey, SecretAccessKey, backupdir string) (*S3ReadWriter, error){
-	awsConfig := aws.NewConfig().
-		WithMaxRetries(maxRetries).
-		WithS3ForcePathStyle(false).
-		WithRegion(region).
-		WithDisableSSL(true).
-		WithEndpoint(endpoint).
-		WithCredentials(credentials.NewStaticCredentials(accessKey, SecretAccessKey, ""))
-
-	awsSessionOpts := session.Options{
-		Config: *awsConfig,
+	awsConfig := &aws.Config{
+		Credentials:      credentials.NewStaticCredentials(accessKey, SecretAccessKey,""),
+		Endpoint:         aws.String(endpoint),
+		Region:           aws.String(region),
+		DisableSSL:       aws.Bool(true),
+		S3ForcePathStyle: aws.Bool(true),
 	}
 
-	ses, err := session.NewSessionWithOptions(awsSessionOpts)
-	if err != nil {
-		return nil, err
-	}
-
-	s3api := s3.New(ses)
+	sess := session.New(awsConfig)
+	s3api := s3.New(sess)
 
 	return &S3ReadWriter{
 		S3api: s3api,
