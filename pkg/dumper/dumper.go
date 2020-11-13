@@ -257,8 +257,11 @@ func Dumper(args *Args) {
 	}
 
 	// Meta data.
-	writeMetaData(args, writer)
+	err = writeMetaData(args, writer)
 
+	if err != nil {
+		klog.Fatalf("Write Meta Data Failed: %v", err)
+	}
 	// database.
 	var wg sync.WaitGroup
 	conn := pool.Get()
@@ -275,7 +278,10 @@ func Dumper(args *Args) {
 		}
 	}
 	for _, database := range databases {
-		dumpDatabaseSchema(conn, args, database, writer)
+		err = dumpDatabaseSchema(conn, args, database, writer)
+		if err != nil {
+			klog.Fatalf("Dump Database Schema Failed: %v", err)
+		}
 	}
 
 	// tables.
@@ -292,7 +298,10 @@ func Dumper(args *Args) {
 	for i, database := range databases {
 		for _, table := range tables[i] {
 			conn := pool.Get()
-			dumpTableSchema(conn, args, database, table, writer)
+			err = dumpTableSchema(conn, args, database, table, writer)
+			if err != nil {
+				klog.Fatalf("Dump Table Schema Failed: %v", err)
+			}
 
 			wg.Add(1)
 			go func(conn *Connection, database string, table string) {
@@ -301,7 +310,10 @@ func Dumper(args *Args) {
 					pool.Put(conn)
 				}()
 				klog.Info("dumping.table[%s.%s].datas.thread[%d]...", database, table, conn.ID)
-				dumpTable(conn, args, database, table, writer)
+				err = dumpTable(conn, args, database, table, writer)
+				if err != nil {
+					klog.Fatalf("Dump Database Schema Failed: %v", err)
+				}
 				klog.Info("dumping.table[%s.%s].datas.thread[%d].done...", database, table, conn.ID)
 			}(conn, database, table)
 		}

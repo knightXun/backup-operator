@@ -193,12 +193,18 @@ func Loader(args *Args) {
 	}
 	// database.
 	conn := pool.Get()
-	restoreDatabaseSchema(files.Databases, conn, reader)
+	err = restoreDatabaseSchema(files.Databases, conn, reader)
+	if err != nil {
+		klog.Fatalf("Restore Database Schema Failed: %v", err)
+	}
 	pool.Put(conn)
 
 	// tables.
 	conn = pool.Get()
-	restoreTableSchema(args.OverwriteTables, files.Schemas, conn, reader)
+	err = restoreTableSchema(args.OverwriteTables, files.Schemas, conn, reader)
+	if err != nil {
+		klog.Fatalf("Restore Table Schema Failed: %v", err)
+	}
 	pool.Put(conn)
 
 	// Shuffle the tables
@@ -220,7 +226,7 @@ func Loader(args *Args) {
 			}()
 			r , err := restoreTable(table, conn, reader)
 			if err != nil {
-
+				klog.Fatalf("Restore Table Failed: %v", err)
 			}
 			atomic.AddUint64(&bytes, uint64(r))
 		}(conn, table)
