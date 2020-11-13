@@ -18,9 +18,6 @@ func writeMetaData(args *Args, writer storage.StorageReadWriter) error {
 	file := fmt.Sprintf("%s/metadata", args.Outdir)
 	err := writer.WriteFile(file, "")
 
-	if err != nil {
-		klog.Error("Write Meta Data Failed: %v", err)
-	}
 	return err
 }
 
@@ -33,10 +30,6 @@ func dumpDatabaseSchema(conn *Connection, args *Args, database string, writer st
 	schema := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS `%s`;", database)
 	file := fmt.Sprintf("%s/%s-schema-create.sql", args.Outdir, database)
 	err = writer.WriteFile(file, schema)
-
-	if err != nil {
-		klog.Errorf("Dump %s Tables Schema Failed: %v", database, err)
-	}
 
 	return err
 }
@@ -52,9 +45,7 @@ func dumpTableSchema(conn *Connection, args *Args, database string, table string
 
 	file := fmt.Sprintf("%s/%s.%s-schema.sql", args.Outdir, database, table)
 	err = writer.WriteFile(file, schema)
-	if err != nil {
-		klog.Errorf("Dump %s Tables %s Schema Failed: %v", database, table, err)
-	}
+
 	return err
 }
 
@@ -100,7 +91,6 @@ func dumpTable(conn *Connection, args *Args, database string, table string, writ
 
 	cursor, err := conn.StreamFetch(fmt.Sprintf("SELECT %s FROM `%s`.`%s` %s", strings.Join(selfields, ", "), database, table, where))
 	if err != nil {
-		klog.Errorf("DumpTable: Fetching Data Failed: %v", err)
 		return err
 	}
 

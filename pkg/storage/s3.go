@@ -53,7 +53,7 @@ func (readwriter *S3ReadWriter) WriteFile(name string, data string)  error  {
 	input := &s3.PutObjectInput{
 		Body:   aws.ReadSeekCloser(bytes.NewReader([]byte(data) )),
 		Bucket: aws.String(readwriter.Bucket),
-		Key:    aws.String(readwriter.BackupDir + "/" +  name),
+		Key:    aws.String(name),
 	}
 
 	_, err := readwriter.S3api.PutObject(input)
