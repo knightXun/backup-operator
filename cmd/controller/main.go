@@ -12,7 +12,6 @@ import (
 	informers "github.com/backup-operator/pkg/client/informers/externalversions"
 	"github.com/backup-operator/pkg/controller/backup"
 	"github.com/backup-operator/pkg/scheme"
-	"github.com/backup-operator/pkg/version"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/uuid"
