@@ -8,7 +8,8 @@ cd $ROOT
 
 source "${ROOT}/hack/lib.sh"
 
-crd_target="$ROOT/manifests/crd.yaml"
+backup_target="$ROOT/manifests/backup.yaml"
+restore_target="$ROOT/manifests/restore.yaml"
 
 # Ensure that we find the binaries we build before anything else.
 export GOBIN="${OUTPUT_BIN}"
@@ -18,8 +19,8 @@ PATH="${GOBIN}:${PATH}"
 export GO111MODULE=on
 go install github.com/backup-operator/cmd/to-crdgen
 
-to-crdgen generate restore > $crd_target
-to-crdgen generate backup >> $crd_target
+to-crdgen generate restore > $restore_target
+to-crdgen generate backup > $backup_target
 
 hack::ensure_gen_crd_api_references_docs
 
