@@ -42,7 +42,7 @@ replace (
 	github.com/Azure/go-autorest => github.com/Azure/go-autorest v0.0.0-20200406145251-e727cfcfc902
 	github.com/GoogleCloudPlatform/kubernetes => github.com/kubernetes/kubernetes v0.18.6
 	github.com/Sirupsen/logrus => github.com/sirupsen/logrus v1.6.0
-	github.com/googleapis/gnostic => ./vendor-staging/github.com/googleapis/gnostic
+	github.com/googleapis/gnostic => ./staging/github.com/google/gnostic
 	golang.org/x/crypto => github.com/golang/crypto v0.0.0-20200221231518-2aa609cf4a9d
 	golang.org/x/exp => github.com/golang/exp v0.0.0-20200221183520-7c80518d1cc7
 	golang.org/x/image => github.com/golang/image v0.0.0-20200119044424-58c23975cae1
