@@ -12,6 +12,7 @@ require (
 	github.com/imdario/mergo v0.3.9 // indirect
 	github.com/json-iterator/go v1.1.10 // indirect
 	github.com/onsi/gomega v1.10.1 // indirect
+	github.com/go-openapi/spec v0.19.3
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/sirupsen/logrus v1.6.0 // indirect
 	github.com/spf13/cobra v1.1.1
@@ -28,6 +29,7 @@ require (
 	golang.org/x/tools v0.0.0-20200616133436-c1934b75d054 // indirect
 	google.golang.org/grpc v1.27.1
 	google.golang.org/protobuf v1.24.0 // indirect
+	google.golang.org/grpc v1.27.1
 	k8s.io/api v0.19.4
 	k8s.io/apiextensions-apiserver v0.19.4
 	k8s.io/apimachinery v0.19.4
