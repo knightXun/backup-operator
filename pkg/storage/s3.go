@@ -89,15 +89,16 @@ func (readwriter *S3ReadWriter) LoadFiles(dir string) *Files {
 
 	files := &Files{}
 	for _, f := range output.Contents {
-		klog.V(3).Info("file name is: ", *f.Key)
+		key := strings.TrimPrefix(*f.Key, dir + "/")
+		klog.V(3).Info("file name is: ", key)
 		switch {
-		case strings.HasSuffix(*f.Key, dbSuffix):
-			files.Databases = append(files.Databases, *f.Key)
-		case strings.HasSuffix(*f.Key, schemaSuffix):
-			files.Schemas = append(files.Schemas, *f.Key)
+		case strings.HasSuffix(key, dbSuffix):
+			files.Databases = append(files.Databases, key)
+		case strings.HasSuffix(key, schemaSuffix):
+			files.Schemas = append(files.Schemas, key)
 		default:
-			if strings.HasSuffix(*f.Key, tableSuffix) {
-				files.Tables = append(files.Tables, *f.Key)
+			if strings.HasSuffix(key, tableSuffix) {
+				files.Tables = append(files.Tables, key)
 			}
 		}
 	}
