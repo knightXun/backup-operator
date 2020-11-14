@@ -13,7 +13,7 @@ const (
 
 	BackupName    = "backups"
 	BackupKind    = "Backup"
-	BackupKindKey = "mydumper"
+	BackupKindKey = "backup"
 	SpecPath = "github.com/controller-operator/pkg/apis/mydumper/v1alpha1."
 )
 

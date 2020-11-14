@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	usage = "usage: to-crdgen generate mydumper [<options>]"
+	usage = "usage: to-crdgen generate backup|restore"
 )
 
 func AddGenerateCommand(config *crdutils.Config) *cobra.Command {

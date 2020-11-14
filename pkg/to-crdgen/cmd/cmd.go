@@ -10,7 +10,7 @@ import (
 
 const (
 	tkcLongDescription = `
-		"to-crdgen (Nebula-Operator crd generator) is a tool to help generate CRD automatically.
+		"to-crdgen (backup-operator crd generator) is a tool to help generate CRD automatically.
 `
 )
 
