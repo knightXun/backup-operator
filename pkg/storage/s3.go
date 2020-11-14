@@ -74,6 +74,8 @@ func (readwriter *S3ReadWriter) ReadFile(name string) ([]byte, error) {
 }
 
 func (readwriter *S3ReadWriter) LoadFiles(dir string) *Files {
+	klog.Info("List Files with prefix: ", dir)
+
 	input := &s3.ListObjectsInput{
 		Bucket: aws.String(readwriter.Bucket),
 		Prefix: aws.String(dir),
@@ -87,6 +89,7 @@ func (readwriter *S3ReadWriter) LoadFiles(dir string) *Files {
 
 	files := &Files{}
 	for _, f := range output.Contents {
+		klog.V(3).Info("file name is: ", *f.Key)
 		switch {
 		case strings.HasSuffix(*f.Key, dbSuffix):
 			files.Databases = append(files.Databases, *f.Key)

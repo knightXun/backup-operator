@@ -30,6 +30,7 @@ var (
 
 
 func restoreDatabaseSchema(dbs []string, conn *Connection, reader storage.StorageReadWriter) error {
+	klog.Info("restore database schema")
 	for _, db := range dbs {
 		base := filepath.Base(db)
 		name := strings.TrimSuffix(base, dbSuffix)
@@ -54,6 +55,7 @@ func restoreDatabaseSchema(dbs []string, conn *Connection, reader storage.Storag
 }
 
 func restoreTableSchema(overwrite bool, tables []string, conn *Connection,reader storage.StorageReadWriter) error {
+	klog.Info("restore table schema")
 	for _, table := range tables {
 		// use
 		base := filepath.Base(table)
@@ -109,6 +111,8 @@ func restoreTableSchema(overwrite bool, tables []string, conn *Connection,reader
 }
 
 func restoreTable(table string, conn *Connection, reader storage.StorageReadWriter) (int, error) {
+	klog.Info("restore table")
+
 	bytes := 0
 	part := "0"
 	base := filepath.Base(table)
