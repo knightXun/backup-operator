@@ -21,13 +21,3 @@ go install github.com/backup-operator/cmd/to-crdgen
 
 to-crdgen generate restore > $restore_target
 to-crdgen generate backup > $backup_target
-
-hack::ensure_gen_crd_api_references_docs
-
-DOCS_PATH="$ROOT/docs/api-references"
-
-${DOCS_BIN} \
--config "$DOCS_PATH/config.json" \
--template-dir "$DOCS_PATH/template" \
--api-dir "github.com/backup-operator/apis/mydumper/v1alpha1" \
--out-file "$DOCS_PATH/docs.md"
