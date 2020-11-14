@@ -14,7 +14,7 @@ const (
 	BackupName    = "backups"
 	BackupKind    = "Backup"
 	BackupKindKey = "backup"
-	SpecPath = "github.com/controller-operator/pkg/apis/mydumper/v1alpha1."
+	SpecPath = "github.com/backup-operator/pkg/apis/mydumper/v1alpha1."
 )
 
 type CrdKind struct {
