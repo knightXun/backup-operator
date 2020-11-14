@@ -13,6 +13,6 @@ echo "$(dirname "${BASH_SOURCE[0]}")/../../../.."
 bash "${CODEGEN_PKG}/generate-groups.sh" all \
   github.com/backup-operator/pkg/client \
   github.com/backup-operator/pkg/apis \
-  "backup:v1alpha1 restore:v1alpha1" \
+  "mydumper:v1alpha1" \
   --output-base "$(dirname "${BASH_SOURCE[0]}")/../../../.." \
   --go-header-file "${SCRIPT_ROOT}/hack/boilerplate.go.txt"
