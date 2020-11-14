@@ -16,6 +16,7 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog"
 
+	backupscheme "github.com/backup-operator/pkg/client/clientset/versioned/scheme"
 	mydumperv1alpha1 "github.com/backup-operator/pkg/apis/mydumper/v1alpha1"
 	"github.com/backup-operator/pkg/client/clientset/versioned"
 	clientset "github.com/backup-operator/pkg/client/clientset/versioned"
@@ -33,7 +34,7 @@ type BackupController struct {
 
 	mydumperLister        mydumperlister.BackupLister
 	mydumperInformer     mydumperInformer.BackupInformer
-	mydumperSynced       cache.InformerSynced
+	backupSynced       cache.InformerSynced
 
 	workqueue workqueue.RateLimitingInterface
 
@@ -66,7 +67,7 @@ func NewBackupController(
 		kubeclient:     				kubeclientset,
 		mydumperInformer:   			nbInformer,
 		mydumperLister:        			nbInformer.Lister(),
-		mydumperSynced:        			nbInformer.Informer().HasSynced,
+		backupSynced:        			nbInformer.Informer().HasSynced,
 		workqueue:         				workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "Backups"),
 		recorder:          				recorder,
 	}
@@ -135,7 +136,7 @@ func (c *BackupController) handleObject(obj interface{}) {
 			return
 		}
 
-		backup, err := c.mydumperLister.Backup(object.GetNamespace()).Get(ownerRef.Name)
+		backup, err := c.mydumperLister.Backups(object.GetNamespace()).Get(ownerRef.Name)
 		if err != nil {
 			klog.Info("ignoring orphaned object '%s' of Backup '%s'", object.GetSelfLink(), ownerRef.Name)
 			return

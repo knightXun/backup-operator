@@ -16,6 +16,7 @@ import (
 	"k8s.io/client-go/util/workqueue"
 	"k8s.io/klog"
 
+	restorescheme "github.com/backup-operator/pkg/client/clientset/versioned/scheme"
 	mydumperv1alpha1 "github.com/backup-operator/pkg/apis/mydumper/v1alpha1"
 	"github.com/backup-operator/pkg/client/clientset/versioned"
 	clientset "github.com/backup-operator/pkg/client/clientset/versioned"
@@ -33,7 +34,7 @@ type RestoreController struct {
 
 	mydumperLister        mydumperlister.RestoreLister
 	mydumperInformer     mydumperInformer.RestoreInformer
-	mydumperSynced       cache.InformerSynced
+	restoreSynced       cache.InformerSynced
 
 	workqueue workqueue.RateLimitingInterface
 
@@ -50,9 +51,9 @@ func NewRestoreController(
 	cli versioned.Interface,
 	genericCli client.Client,
 	informerFactory informers.SharedInformerFactory,
-	kubeInformerFactory kubeinformers.SharedInformerFactory) *MydumperController {
+	kubeInformerFactory kubeinformers.SharedInformerFactory) *RestoreController {
 
-	utilruntime.Must(Restorescheme.AddToScheme(scheme.Scheme))
+	utilruntime.Must(restorescheme.AddToScheme(scheme.Scheme))
 	klog.Info("Creating event broadcaster")
 	eventBroadcaster := record.NewBroadcasterWithCorrelatorOptions(record.CorrelatorOptions{QPS: 1})
 	eventBroadcaster.StartLogging(klog.V(2).Infof)
@@ -66,7 +67,7 @@ func NewRestoreController(
 		kubeclient:     				kubeclientset,
 		mydumperInformer:   			nbInformer,
 		mydumperLister:        			nbInformer.Lister(),
-		mydumperSynced:        			nbInformer.Informer().HasSynced,
+		restoreSynced:        			nbInformer.Informer().HasSynced,
 		workqueue:         				workqueue.NewNamedRateLimitingQueue(workqueue.DefaultControllerRateLimiter(), "Restores"),
 		recorder:          				recorder,
 	}
@@ -96,7 +97,7 @@ func (c *RestoreController) createRestore(obj interface{}) {
 
 func (c *RestoreController) deleteRestore(obj interface{}) {
 
-	Restore := obj.(*mydumperv1alpha1.Restore)
+	restore := obj.(*mydumperv1alpha1.Restore)
 
 }
 
@@ -153,7 +154,7 @@ func (c *RestoreController) Run(workers int, stopCh <-chan struct{}) {
 	klog.Info("Starting Backuo controller")
 	defer klog.Info("Shutting down Restore controller")
 
-	if ok := cache.WaitForCacheSync(stopCh, c.RestoreSynced); !ok {
+	if ok := cache.WaitForCacheSync(stopCh, c.restoreSynced); !ok {
 		klog.Error("Wait For Cache Sync Failed")
 		return
 	}
