@@ -18,5 +18,5 @@ export GO111MODULE=on
 go install k8s.io/code-generator/cmd/openapi-gen
 
 openapi-gen --go-header-file=./hack/boilerplate.go.txt \
-    -i github.com/vesoft-inc-private/nebula-operator/pkg/apis/nebula/v1alpha1,k8s.io/apimachinery/pkg/apis/meta/v1,k8s.io/api/core/v1 \
-    -p apis/nebula/v1alpha1 -O openapi_generated -o ./pkg
+    -i github.com/backup-operator/pkg/apis/mydumper/v1alpha1,k8s.io/apimachinery/pkg/apis/meta/v1,k8s.io/api/core/v1 \
+    -p apis/mydumper/v1alpha1 -O openapi_generated -o ./pkg

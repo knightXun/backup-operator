@@ -16,9 +16,9 @@ PATH="${GOBIN}:${PATH}"
 
 # Enable go modules explicitly.
 export GO111MODULE=on
-go install github.com/vesoft-inc-private/nebula-operator/cmd/to-crdgen
+go install github.com/backup-operator/cmd/to-crdgen
 
-to-crdgen generate nebulacluster > $crd_target
+to-crdgen generate restore > $crd_target
 to-crdgen generate backup >> $crd_target
 
 hack::ensure_gen_crd_api_references_docs
@@ -28,5 +28,5 @@ DOCS_PATH="$ROOT/docs/api-references"
 ${DOCS_BIN} \
 -config "$DOCS_PATH/config.json" \
 -template-dir "$DOCS_PATH/template" \
--api-dir "github.com/vesoft-inc-private/nebula-operator/apis/nebula/v1alpha1" \
+-api-dir "github.com/backup-operator/apis/mydumper/v1alpha1" \
 -out-file "$DOCS_PATH/docs.md"
