@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/aws/aws-sdk-go v1.35.25
 	github.com/dlintw/goconf v0.0.0-20120228082610-dcc070983490
+	github.com/go-openapi/spec v0.19.3
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/pflag v1.0.5
@@ -12,13 +13,18 @@ require (
 	github.com/xelabs/go-mysqlstack v0.0.0-20200603045106-7ffcfc8ed3c2
 	github.com/yisaer/crd-validation v0.0.3
 	go.uber.org/zap v1.16.0
-	google.golang.org/grpc v1.27.0
+	google.golang.org/grpc v1.27.1
 	k8s.io/api v0.19.4
 	k8s.io/apiextensions-apiserver v0.19.4
 	k8s.io/apimachinery v0.19.4
+	k8s.io/client-go v0.18.6
 	k8s.io/code-generator v0.19.4
 	k8s.io/klog v1.0.0
+	k8s.io/klog/v2 v2.4.0
+	k8s.io/kube-openapi v0.0.0-20200805222855-6aeccd4b50c6
 	k8s.io/kubectl v0.19.4
+	k8s.io/kubernetes v1.19.4
+	sigs.k8s.io/controller-runtime v0.6.3
 )
 
 replace (
