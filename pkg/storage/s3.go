@@ -102,5 +102,5 @@ func (readwriter *S3ReadWriter) LoadFiles(dir string) *Files {
 			}
 		}
 	}
-	return &Files{}
+	return files
 }
