@@ -16,7 +16,7 @@ var (
 func main() {
 	rootCmd := &cobra.Command{
 		Use:              "mysqldumper",
-		Short:            "mysqldumper dumper/restore tool.",
+		Short:            "mysqldumper dumper/restore tools.",
 		TraverseChildren: true,
 		SilenceUsage:     true,
 	}
@@ -54,12 +54,12 @@ func NewRestoreCommand() *cobra.Command {
 	return command
 }
 
-// NewBackupCommand return a full backup subcommand.
+// NewBackupCommand return a full mydumper subcommand.
 func NewBackupCommand() *cobra.Command {
 	command := &cobra.Command{
-		Use:          "backup",
-		Short:        "backup a mysql",
-		Example:      "Usage: mysqldumper backup -c conf/mydumper.ini.sample",
+		Use:          "mydumper",
+		Short:        "mydumper a mysql",
+		Example:      "Usage: mysqldumper mydumper -c conf/mydumper.ini.sample",
 		SilenceUsage: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			arguments, err := dumper.ParseDumperConfig(config)
